@@ -1,5 +1,6 @@
 package com.chatterbox.userservice.controller;
 
+import com.chatterbox.userservice.messaging.NotificationEventProducer;
 import com.chatterbox.userservice.model.User;
 import com.chatterbox.userservice.service.UserService;
 import jakarta.validation.Valid;
@@ -46,11 +47,14 @@ import java.util.Map;
 public class UserController {
 
     private final UserService userService;
+    private final NotificationEventProducer notificationEventProducer;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
         log.info("Request received to register user with username: {}", user.getUserName());
         String response = userService.registerUser(user);
+        notificationEventProducer.sendNotificationEvent(user.getUserName(),
+                "Congratulation " + user.getFirstName() + " you have registered successfully!");
         return ResponseEntity.ok(response);
     }
 
