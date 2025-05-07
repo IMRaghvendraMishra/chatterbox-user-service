@@ -6,6 +6,7 @@ import com.chatterbox.userservice.service.UserService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.log4j.Log4j2;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -46,8 +47,8 @@ import java.util.Map;
 @Log4j2
 public class UserController {
 
-    private final UserService userService;
-    private final NotificationEventProducer notificationEventProducer;
+    @Autowired private final UserService userService;
+    @Autowired private final NotificationEventProducer notificationEventProducer;
 
     @PostMapping("/register")
     public ResponseEntity<String> registerUser(@Valid @RequestBody User user) {
